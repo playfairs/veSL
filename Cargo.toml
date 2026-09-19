@@ -1,0 +1,13 @@
+[package]
+name = "vesl"
+version = "0.1.0"
+edition = "2024"
+description = "PNG carrier for serialized VSL payloads"
+license = "Unlicense"
+
+[dependencies]
+vsl = { path = "../vsl" }
+thiserror = "2"
+
+[dev-dependencies]
+tempfile = "3"

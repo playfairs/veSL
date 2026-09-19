@@ -1,0 +1,12 @@
+project "vesl" {
+    description = "Vessel Embedded Serialization Layer"
+    version = "0.1.0"
+    license = file("./UNLICENSE")
+    authors = ["playfairs"]
+    edition = "2024"
+
+    rust_library "vesl" {
+        sources = ["src/lib.rs"]
+        install = false
+    }
+}

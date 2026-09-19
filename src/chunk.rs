@@ -14,7 +14,10 @@ impl PngChunk {
 
     pub fn encode(&self) -> Result<Vec<u8>, Error> {
         let length = u32::try_from(self.data.len()).map_err(|_| {
-            Error::InvalidStructure(format!("chunk payload exceeds u32 length: {}", self.data.len()))
+            Error::InvalidStructure(format!(
+                "chunk payload exceeds u32 length: {}",
+                self.data.len()
+            ))
         })?;
         let mut encoded = Vec::with_capacity(self.data.len() + 12);
         encoded.extend_from_slice(&length.to_be_bytes());

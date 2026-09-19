@@ -1,7 +1,7 @@
 use crate::{
+    PNG_SIGNATURE,
     chunk::{PngChunk, validate_type},
     error::Error,
-    PNG_SIGNATURE,
 };
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -21,14 +21,22 @@ impl PngDocument {
 
         while offset < input.len() {
             if input.len() - offset < 12 {
-                return Err(Error::Truncated { context: "PNG chunk header" });
+                return Err(Error::Truncated {
+                    context: "PNG chunk header",
+                });
             }
-            let length = u32::from_be_bytes(input[offset..offset + 4].try_into().map_err(|_| {
-                Error::Truncated { context: "PNG chunk length" }
-            })?);
-            let kind: [u8; 4] = input[offset + 4..offset + 8].try_into().map_err(|_| {
-                Error::Truncated { context: "PNG chunk type" }
-            })?;
+            let length =
+                u32::from_be_bytes(input[offset..offset + 4].try_into().map_err(|_| {
+                    Error::Truncated {
+                        context: "PNG chunk length",
+                    }
+                })?);
+            let kind: [u8; 4] =
+                input[offset + 4..offset + 8]
+                    .try_into()
+                    .map_err(|_| Error::Truncated {
+                        context: "PNG chunk type",
+                    })?;
             validate_type(kind)?;
             let data_start = offset + 8;
             let data_len = usize::try_from(length).map_err(|_| Error::ChunkLength {
